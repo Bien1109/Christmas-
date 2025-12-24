@@ -153,14 +153,43 @@ function Tree() {
 }
 
 export default function ChristmasTree() {
-  const [audio] = useState(() => new Audio("/christmas.mp3"));
-  const [playing, setPlaying] = useState(false);
+  const [audio] = useState(() => {
+  const a = new Audio("/christmas.mp3");
+  a.loop = true;
+  a.preload = "auto";
+  a.crossOrigin = "anonymous";
+  return a;
+});
+const [playing, setPlaying] = useState(false);
 
-  const toggleMusic = () => {
-    if (!playing) audio.play();
+useEffect(() => {
+  const unlock = () => {
+    audio.play().then(() => {
+      audio.pause();
+      document.removeEventListener("touchstart", unlock);
+      document.removeEventListener("click", unlock);
+    }).catch(()=>{});
+  };
+
+  document.addEventListener("touchstart", unlock, { passive: true });
+  document.addEventListener("click", unlock);
+
+  return () => {
+    document.removeEventListener("touchstart", unlock);
+    document.removeEventListener("click", unlock);
+  };
+}, [audio]);
+
+const toggleMusic = async () => {
+  try {
+    if (!playing) await audio.play();
     else audio.pause();
     setPlaying(!playing);
-  };
+  } catch (e) {
+    console.log("Audio blocked", e);
+  }
+};
+
 
   return (
     <>
