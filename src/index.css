@@ -1,0 +1,62 @@
+/* src/index.css */
+* {
+  box-sizing: border-box;
+}
+
+body, html, #root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #0f172a;
+  font-family: 'Arial', sans-serif;
+}
+
+.canvas-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+/* Lớp phủ tiêu đề */
+.title-overlay {
+  position: absolute;
+  top: 5%;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  color: white;
+  pointer-events: none; /* Để chuột bấm xuyên qua được vào canvas 3D */
+  z-index: 10;
+  padding: 0 20px;
+}
+
+.title-overlay h1 {
+  margin: 0;
+  font-size: 3rem;
+  font-weight: bold;
+  color: #fbbf24;
+  text-shadow: 0 0 15px rgba(251, 191, 36, 0.8); /* Hiệu ứng chữ phát sáng */
+}
+
+.title-overlay p {
+  font-size: 1.2rem;
+  opacity: 0.8;
+  margin-top: 10px;
+}
+
+/* --- RESPONSIVE CHO ĐIỆN THOẠI --- */
+@media (max-width: 768px) {
+  .title-overlay {
+    top: 10%; /* Đẩy xuống thấp hơn một chút trên mobile */
+  }
+  
+  .title-overlay h1 {
+    font-size: 2rem; /* Chữ nhỏ lại */
+  }
+  
+  .title-overlay p {
+    font-size: 1rem;
+  }
+}
