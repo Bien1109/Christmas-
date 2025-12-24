@@ -1,0 +1,8 @@
+{
+  "name": "Christmas 3D",
+  "short_name": "Noel3D",
+  "display": "standalone",
+  "background_color": "#00111f",
+  "theme_color": "#ffffff",
+  "icons": []
+}
