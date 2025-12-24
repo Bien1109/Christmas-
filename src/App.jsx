@@ -139,50 +139,38 @@ const ChristmasTree = (props) => {
 function App() {
   return (
     <div className="canvas-container">
-      <Canvas shadows camera={{ position: [0, 2, 10], fov: 50 }}>
-        {/* Thêm Suspense để chờ tải ảnh và font chữ */}
-        <Suspense fallback={null}> 
-          
+      {/* FIX LỖI 1: Thêm dpr={[1, 1.5]} 
+         Nghĩa là: Máy yếu chạy 1.0, máy mạnh tối đa chỉ chạy 1.5 (thay vì 3.0 hay 4.0)
+      */}
+      <Canvas shadows dpr={[1, 1.5]} camera={{ position: [0, 2, 10], fov: 50 }}>
+        
+        <Suspense fallback={null}>
           <fog attach="fog" args={['#0f172a', 8, 25]} />
           <color attach="background" args={['#0f172a']} />
           
           <ambientLight intensity={0.4} />
           <directionalLight castShadow position={[5, 10, 5]} intensity={1.5} shadow-mapSize={[1024, 1024]} />
 
-          {/* Cây thông */}
           <ChristmasTree position={[0, -0.5, 0]} />
 
-          {/* --- CÁC HỘP QUÀ --- */}
-          <GiftBox 
-              position={[-2.2, -3.5, 1.5]} 
-              color="#ef4444" 
-              imageUrl=".\IMG20250707053046.jpg" 
-          />
-          
-          <GiftBox 
-              position={[1.8, -3.5, 2]} 
-              color="#3b82f6" 
-              imageUrl=".\retouch_2025070916341226.jpg" 
-          />
-          
-          <GiftBox 
-              position={[0, -3.5, 3]} 
-              color="#eab308" 
-              imageUrl=".\retouch_2025071016472326.jpg" 
-          />
+          {/* Các hộp quà giữ nguyên */}
+          <GiftBox position={[-2.2, -3.5, 1.5]} color="#ef4444" imageUrl=".\IMG20250707053046.jpg" />
+          <GiftBox position={[1.8, -3.5, 2]} color="#3b82f6" imageUrl=".\retouch_2025070916341226.jpg" />
+          <GiftBox position={[0, -3.5, 3]} color="#eab308" imageUrl=".\retouch_2025071016472326.jpg" />
 
-          {/* Hiệu ứng */}
           <Stars radius={50} depth={50} count={3000} factor={4} saturation={0.5} fade speed={0.5} />
           <Sparkles count={100} scale={10} size={4} speed={0.3} opacity={0.6} color="#fbbf24" />
           
-          <EffectComposer>
-            <Bloom luminanceThreshold={1.1} intensity={0.8} levels={9} mipmapBlur />
+          {/* FIX LỖI 2: Thêm disableNormalPass và multisampling={0}
+             Điều này giúp EffectComposer không bị xung đột với phần cứng điện thoại
+          */}
+          <EffectComposer disableNormalPass multisampling={0}>
+            <Bloom luminanceThreshold={1} intensity={0.8} levels={9} mipmapBlur />
             <Vignette eskil={false} offset={0.1} darkness={1.1} />
           </EffectComposer>
 
           <OrbitControls enableZoom={false} enablePan={false} maxPolarAngle={Math.PI / 1.6} minPolarAngle={Math.PI / 4} />
-        
-        </Suspense> {/* Kết thúc Suspense */}
+        </Suspense>
       </Canvas>
       
       <div className="title-overlay">
